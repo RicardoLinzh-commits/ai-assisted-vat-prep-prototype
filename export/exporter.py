@@ -13,6 +13,25 @@ from pathlib import Path
 import pandas as pd
 
 LOGGER = logging.getLogger(__name__)
+ISSUE_REPORT_COLUMNS = [
+    "row_index",
+    "issue_type",
+    "column",
+    "checked_column",
+    "value",
+    "observed_value",
+    "anomaly_score",
+    "lower_bound",
+    "upper_bound",
+    "reason",
+    "method",
+    "message",
+    "date",
+    "description",
+    "net_amount",
+    "vat_amount",
+    "category",
+]
 
 
 def export_outputs(
@@ -65,9 +84,14 @@ def export_outputs(
     if not anomaly_results.empty:
         anomaly_issue_rows = anomaly_results.copy()
         anomaly_issue_rows["issue_type"] = "anomaly"
-        anomaly_issue_rows["column"] = "net_amount"
+        anomaly_issue_rows["column"] = anomaly_issue_rows["checked_column"]
+        anomaly_issue_rows["value"] = anomaly_issue_rows["observed_value"]
         anomaly_issue_rows["message"] = anomaly_issue_rows["reason"]
         issue_rows = pd.concat([issue_rows, anomaly_issue_rows], ignore_index=True, sort=False)
+
+    # Reindexing keeps the mixed validation/anomaly export predictable while
+    # preserving richer anomaly metadata for later analysis.
+    issue_rows = issue_rows.reindex(columns=ISSUE_REPORT_COLUMNS)
 
     # Writing issue and review outputs separately makes the review trail explicit.
     issue_rows.to_csv(issue_report_path, index=False)

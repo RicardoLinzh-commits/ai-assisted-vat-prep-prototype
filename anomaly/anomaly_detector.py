@@ -11,7 +11,18 @@ import logging
 import pandas as pd
 
 LOGGER = logging.getLogger(__name__)
-EMPTY_ANOMALY_RESULT = pd.DataFrame(columns=["row_index", "anomaly_score", "reason"])
+EMPTY_ANOMALY_RESULT = pd.DataFrame(
+    columns=[
+        "row_index",
+        "checked_column",
+        "observed_value",
+        "anomaly_score",
+        "lower_bound",
+        "upper_bound",
+        "reason",
+        "method",
+    ]
+)
 
 
 def detect_anomalies(dataframe: pd.DataFrame, column: str = "net_amount", method: str = "iqr") -> pd.DataFrame:
@@ -70,7 +81,12 @@ def detect_anomalies(dataframe: pd.DataFrame, column: str = "net_amount", method
         # The absolute z-score is used here as a transparent distance-from-mean measure.
         valid_rows["anomaly_score"] = ((valid_rows[column] - mean_value) / std_value).abs()
         suspicious_rows = valid_rows[valid_rows["anomaly_score"] > 2.0].copy()
+        suspicious_rows["checked_column"] = column
+        suspicious_rows["observed_value"] = suspicious_rows[column]
+        suspicious_rows["lower_bound"] = mean_value - (2.0 * std_value)
+        suspicious_rows["upper_bound"] = mean_value + (2.0 * std_value)
         suspicious_rows["reason"] = "Absolute z-score above 2.0"
+        suspicious_rows["method"] = method
     else:
         q1 = valid_rows[column].quantile(0.25)
         q3 = valid_rows[column].quantile(0.75)
@@ -86,8 +102,13 @@ def detect_anomalies(dataframe: pd.DataFrame, column: str = "net_amount", method
         distance = pd.Series(0.0, index=suspicious_rows.index)
         distance = distance.where(suspicious_rows[column] >= lower_bound, lower_bound - suspicious_rows[column])
         distance = distance.where(suspicious_rows[column] <= upper_bound, suspicious_rows[column] - upper_bound)
+        suspicious_rows["checked_column"] = column
+        suspicious_rows["observed_value"] = suspicious_rows[column]
         suspicious_rows["anomaly_score"] = distance.abs()
+        suspicious_rows["lower_bound"] = lower_bound
+        suspicious_rows["upper_bound"] = upper_bound
         suspicious_rows["reason"] = "Outside IQR bounds"
+        suspicious_rows["method"] = method
 
     if suspicious_rows.empty:
         LOGGER.info("No suspicious transactions detected for column %s", column)

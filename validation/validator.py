@@ -95,7 +95,11 @@ def validate_vat_data(dataframe: pd.DataFrame) -> dict:
     # Date parsing is deferred to pandas so the check remains concise and
     # aligned with the prototype's spreadsheet-oriented workflow.
     if "date" in dataframe.columns:
-        parsed_dates = pd.to_datetime(dataframe["date"], errors="coerce")
+        date_values = dataframe["date"]
+        if pd.api.types.is_string_dtype(date_values) or date_values.dtype == "object":
+            date_values = date_values.astype("string").str.strip()
+
+        parsed_dates = pd.to_datetime(date_values, errors="coerce", dayfirst=True)
         invalid_date_mask = dataframe["date"].notna() & parsed_dates.isna()
         for row_index in dataframe.index[invalid_date_mask]:
             LOGGER.warning("Invalid date format detected at row %s", row_index)

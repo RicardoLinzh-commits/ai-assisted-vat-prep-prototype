@@ -11,6 +11,7 @@ import logging
 import pandas as pd
 
 LOGGER = logging.getLogger(__name__)
+REVIEW_LOG_COLUMNS = ["row_index", "issue_type", "decision", "notes"]
 
 
 class ReviewManager:
@@ -92,6 +93,6 @@ class ReviewManager:
                 }
             )
 
-        review_log = pd.DataFrame(decisions)
+        review_log = pd.DataFrame(decisions, columns=REVIEW_LOG_COLUMNS)
         LOGGER.info("Review simulation recorded %s decisions", len(review_log))
         return review_log

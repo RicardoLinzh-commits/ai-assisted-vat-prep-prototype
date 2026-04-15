@@ -7,6 +7,8 @@ find and keep consistent.
 
 - [docs/architecture/gui_architecture.md](architecture/gui_architecture.md)
 - [docs/defense_directory_guide.md](defense_directory_guide.md)
+- [docs/data_sources.md](data_sources.md)
+- [docs/technology_and_attribution.md](technology_and_attribution.md)
 
 ## Evaluation
 

@@ -229,6 +229,10 @@ def build_heading(app_mode: str) -> str:
 def build_welcome_markdown(app_mode: str) -> str:
     return (
         "This local-first prototype helps you analyse VAT-related spreadsheets, explain why records were flagged, and record a human review trail.\n\n"
+        "**Built with Gradio**\n"
+        "- Browser UI shell: Gradio\n"
+        "- Tabular processing: pandas\n"
+        "- Figure output: Matplotlib\n\n"
         "**Architecture**\n"
         "- Same Python core is reused by source run, local GUI, Docker, Windows package, and the web demo shell.\n"
         "- The browser GUI is the current main interaction entry.\n"

@@ -192,6 +192,44 @@ That document covers:
 - how the limited web demo profile should be deployed
 - what GitHub Actions now build and validate
 
+## Data Sources
+
+The repository contains a mix of:
+
+- public-source raw transaction-style datasets
+- adapted prototype input datasets
+- controlled evaluation datasets created for testing
+- supplemental synthetic realism data
+
+These do not all have the same status. In particular:
+
+- public raw files are open-source input material, not VAT ground truth
+- adapted files are transformed convenience inputs for the prototype schema
+- evaluation files are repository-authored controlled test cases
+- realism outputs are synthetic supplemental datasets, not official tax truth
+
+The full provenance and usage notes are documented in
+[docs/data_sources.md](docs/data_sources.md).
+
+## Technology And Attribution
+
+The prototype is built on a small set of well-defined third-party tools:
+
+- Gradio for the browser-based UI shell
+- pandas for tabular processing
+- openpyxl for Excel support
+- Matplotlib for figure and chart generation
+- PyInstaller for the Windows packaged demo
+- Docker for container-based demo delivery
+
+The most accurate short description is:
+
+> Built with Gradio, backed by a shared Python review pipeline, with pandas for
+> tabular processing and Matplotlib for figure output.
+
+More detailed notes are documented in
+[docs/technology_and_attribution.md](docs/technology_and_attribution.md).
+
 ## Main Repository Structure
 
 - `pipeline.py` - shared orchestration entry

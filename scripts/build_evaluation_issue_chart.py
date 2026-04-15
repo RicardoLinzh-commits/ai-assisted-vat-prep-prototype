@@ -17,9 +17,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-ASSERTION_TABLE_INPUT_PATH = PROJECT_ROOT / "output" / "evaluation_assertion_results_table.csv"
-USEFULNESS_SUMMARY_INPUT_PATH = PROJECT_ROOT / "output" / "usefulness_validation_pack" / "usefulness_comparison_summary.csv"
-CHART_OUTPUT_PATH = PROJECT_ROOT / "output" / "evaluation_evidence_chart.png"
+OUTPUT_ROOT = PROJECT_ROOT / "output"
+EVIDENCE_ROOT = OUTPUT_ROOT / "evidence" / "evaluation"
+ASSERTION_TABLE_INPUT_PATH = EVIDENCE_ROOT / "evaluation_assertion_results_table.csv"
+USEFULNESS_SUMMARY_INPUT_PATH = EVIDENCE_ROOT / "usefulness_validation_pack" / "usefulness_comparison_summary.csv"
+CHART_OUTPUT_PATH = EVIDENCE_ROOT / "figures" / "evaluation_evidence_chart.png"
 
 ASSERTION_LABELS = {
     "deterministic_validation_case.csv": "Deterministic",
@@ -39,10 +41,27 @@ def _read_csv(path: Path) -> pd.DataFrame:
     return pd.read_csv(path)
 
 
+def _read_first_existing(paths: list[Path]) -> pd.DataFrame:
+    for path in paths:
+        if path.exists():
+            return pd.read_csv(path)
+    return pd.DataFrame()
+
+
 def main() -> None:
     """Create a two-panel evidence chart for the dissertation write-up."""
-    assertion_table = _read_csv(ASSERTION_TABLE_INPUT_PATH)
-    usefulness_summary = _read_csv(USEFULNESS_SUMMARY_INPUT_PATH)
+    assertion_table = _read_first_existing(
+        [
+            ASSERTION_TABLE_INPUT_PATH,
+            OUTPUT_ROOT / "evaluation_assertion_results_table.csv",
+        ]
+    )
+    usefulness_summary = _read_first_existing(
+        [
+            USEFULNESS_SUMMARY_INPUT_PATH,
+            OUTPUT_ROOT / "usefulness_validation_pack" / "usefulness_comparison_summary.csv",
+        ]
+    )
 
     if assertion_table.empty and usefulness_summary.empty:
         raise SystemExit("No evaluation summary data found. Run the evaluation scripts first.")

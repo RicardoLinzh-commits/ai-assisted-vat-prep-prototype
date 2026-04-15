@@ -61,4 +61,4 @@ layers and makes the dissertation story easier to defend: the interface is the
 presentation layer, while the core modules remain the system of record.
 
 For a more detailed justification of the GUI structure, see
-[docs/gui_architecture.md](docs/gui_architecture.md).
+[docs/architecture/gui_architecture.md](docs/architecture/gui_architecture.md).

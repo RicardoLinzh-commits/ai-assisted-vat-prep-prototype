@@ -64,24 +64,24 @@ These files now form part of the project's validation story, so they are not
 The following documentation is now part of the project's main narrative:
 
 - `README.md`
-- `architecture.md`
-- `docs/evaluation_plan.md`
-- `docs/evaluation_test_pack.md`
-- `docs/evaluation_results.md`
-- `docs/usefulness_validation_support.md`
-- `docs/realism_dataset_support.md`
-- `docs/gui_architecture.md`
-- `docs/VAT_review_rules.md`
-- `docs/VAT_review_workflow.md`
+- `../architecture.md`
+- `../evaluation/evaluation_plan.md`
+- `../evaluation/evaluation_test_pack.md`
+- `../evaluation/evaluation_results.md`
+- `../evaluation/usefulness_validation_support.md`
+- `../evaluation/realism_dataset_support.md`
+- `../architecture/gui_architecture.md`
+- `../domain/VAT_review_rules.md`
+- `../domain/VAT_review_workflow.md`
 
 Recommended interpretation:
 
-- `evaluation_plan.md` explains intent and scope
-- `evaluation_test_pack.md` explains prepared scenarios
-- `evaluation_results.md` records what was actually achieved
-- `usefulness_validation_support.md` and
-  `realism_dataset_support.md` explain the two newer evidence layers
-- `gui_architecture.md` helps defend the current presentation-shell structure
+- `../evaluation/evaluation_plan.md` explains intent and scope
+- `../evaluation/evaluation_test_pack.md` explains prepared scenarios
+- `../evaluation/evaluation_results.md` records what was actually achieved
+- `../evaluation/usefulness_validation_support.md` and
+  `../evaluation/realism_dataset_support.md` explain the two newer evidence layers
+- `../architecture/gui_architecture.md` helps defend the current presentation-shell structure
 
 ### 4. Generated output and run artefacts
 
@@ -160,13 +160,13 @@ If the repository needs a cleaner final-facing document set, the strongest
 subset is:
 
 - `README.md`
-- `architecture.md`
-- `docs/evaluation_plan.md`
-- `docs/evaluation_test_pack.md`
-- `docs/evaluation_results.md`
-- `docs/usefulness_validation_support.md`
-- `docs/realism_dataset_support.md`
-- `docs/gui_architecture.md`
+- `../architecture.md`
+- `../evaluation/evaluation_plan.md`
+- `../evaluation/evaluation_test_pack.md`
+- `../evaluation/evaluation_results.md`
+- `../evaluation/usefulness_validation_support.md`
+- `../evaluation/realism_dataset_support.md`
+- `../architecture/gui_architecture.md`
 
 This subset is enough to explain:
 

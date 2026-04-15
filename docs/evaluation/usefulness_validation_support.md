@@ -6,7 +6,7 @@ This document describes the practical support assets used to validate whether
 the prototype is more useful than a raw issue-list baseline for pre-submission
 VAT review work.
 
-The usefulness validation follows the goals in `docs/evaluation_plan.md`,
+The usefulness validation follows the goals in `evaluation_plan.md`,
 especially:
 
 - explainability and workflow evaluation
@@ -29,16 +29,16 @@ The usefulness validation support now includes:
 
 When the script is run, it writes:
 
-- `output/usefulness_validation_pack/<dataset>/raw_issue_list_baseline.csv`
-- `output/usefulness_validation_pack/<dataset>/review_oriented_output.csv`
-- `output/usefulness_validation_pack/<dataset>/usefulness_side_by_side.csv`
-- `output/usefulness_validation_pack/usefulness_validation_task_pack.csv`
-- `output/usefulness_validation_pack/usefulness_validation_manifest.csv`
+- `output/runs/evaluation/usefulness_validation_pack/<dataset>/raw_issue_list_baseline.csv`
+- `output/runs/evaluation/usefulness_validation_pack/<dataset>/review_oriented_output.csv`
+- `output/runs/evaluation/usefulness_validation_pack/<dataset>/usefulness_side_by_side.csv`
+- `output/evidence/evaluation/usefulness_validation_pack/usefulness_validation_task_pack.csv`
+- `output/evidence/evaluation/usefulness_validation_pack/usefulness_validation_manifest.csv`
 
 The repository also records dissertation-ready result outputs:
 
-- `output/usefulness_validation_pack/usefulness_comparison_results.csv`
-- `output/usefulness_validation_pack/usefulness_comparison_summary.csv`
+- `output/evidence/evaluation/usefulness_validation_pack/usefulness_comparison_results.csv`
+- `output/evidence/evaluation/usefulness_validation_pack/usefulness_comparison_summary.csv`
 
 ## How The Comparison Works
 

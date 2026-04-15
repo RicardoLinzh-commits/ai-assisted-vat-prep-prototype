@@ -29,10 +29,13 @@ SYNTHETIC_DATASET_PATHS = [
     PROJECT_ROOT / "data" / "synthetic_eval_case_b.csv",
 ]
 
-ASSERTION_DATASET_OUTPUT_ROOT = PROJECT_ROOT / "output" / "evaluation_assertion_runs"
-SUMMARY_OUTPUT_PATH = PROJECT_ROOT / "output" / "synthetic_evaluation_summary.csv"
-ASSERTION_RESULTS_OUTPUT_PATH = PROJECT_ROOT / "output" / "evaluation_assertion_results.csv"
-ASSERTION_SUMMARY_OUTPUT_PATH = PROJECT_ROOT / "output" / "evaluation_assertion_summary.csv"
+OUTPUT_ROOT = PROJECT_ROOT / "output"
+RUNS_OUTPUT_ROOT = OUTPUT_ROOT / "runs" / "evaluation"
+EVIDENCE_OUTPUT_ROOT = OUTPUT_ROOT / "evidence" / "evaluation"
+ASSERTION_DATASET_OUTPUT_ROOT = RUNS_OUTPUT_ROOT / "assertion_runs"
+SUMMARY_OUTPUT_PATH = EVIDENCE_OUTPUT_ROOT / "synthetic_evaluation_summary.csv"
+ASSERTION_RESULTS_OUTPUT_PATH = EVIDENCE_OUTPUT_ROOT / "evaluation_assertion_results.csv"
+ASSERTION_SUMMARY_OUTPUT_PATH = EVIDENCE_OUTPUT_ROOT / "evaluation_assertion_summary.csv"
 EXPECTED_ASSERTIONS_PATH = PROJECT_ROOT / "data" / "evaluation" / "expected_issue_assertions.csv"
 EVALUATION_DATASET_ROOT = PROJECT_ROOT / "data" / "evaluation"
 
@@ -326,6 +329,7 @@ def main() -> None:
     summary_rows = [summarise_dataset(dataset_path) for dataset_path in SYNTHETIC_DATASET_PATHS]
     summary_dataframe = pd.DataFrame(summary_rows)
 
+    ASSERTION_DATASET_OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
     ASSERTION_RESULTS_OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     SUMMARY_OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
     ASSERTION_SUMMARY_OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)

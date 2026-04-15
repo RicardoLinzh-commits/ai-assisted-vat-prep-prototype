@@ -75,7 +75,7 @@ spreadsheet input
 -> exported CSV artefacts
 ```
 
-Target product workflow and system boundary are documented in [docs/project_direction.md](docs/project_direction.md).
+Target product workflow and system boundary are documented in [docs/domain/project_direction.md](docs/domain/project_direction.md).
 
 ## Current Status Of The Five Entry Points
 
@@ -147,19 +147,19 @@ venv\Scripts\python.exe gui.py --host 127.0.0.1 --port 7860
 macOS:
 
 ```bash
-./run_demo_mac.command
+./tools/run_demo_mac.command
 ```
 
 Windows convenience launcher:
 
 ```bat
-run_demo.bat
+tools\run_demo.bat
 ```
 
 ### 4. Build the Windows distributable demo
 
 ```powershell
-.\build_demo.ps1
+.\tools\build_demo.ps1
 ```
 
 Outputs:
@@ -197,8 +197,11 @@ That document covers:
 - `pipeline.py` - shared orchestration entry
 - `main.py` - thin source-run shell
 - `gui.py` - thin browser GUI shell
-- `build_demo.ps1` - Windows packaging script
-- `vat_spreadsheet_demo.spec` - PyInstaller spec for the Windows demo
+- `tools/build_demo.ps1` - Windows packaging script
+- `packaging/vat_spreadsheet_demo.spec` - PyInstaller spec for the Windows demo
+- `tools/run_demo.bat` - Windows convenience launcher
+- `tools/run_demo_mac.command` - macOS convenience launcher
+- `scripts/prepare_public_datasets.py` - public dataset adaptation helper
 - `docker-compose.yml` - local Docker launcher
 - `Dockerfile` - single-container GUI service image
 - `.github/workflows/build-windows-demo.yml` - automated Windows package build
@@ -211,7 +214,7 @@ That document covers:
 - `explanation/` - local automatic explanation
 - `ai/` - compact snapshot and optional AI suggestion layer
 - `scripts/` - evaluation and supporting scripts
-- `docs/gui_architecture.md` - justification for the current GUI shell boundary
+- `docs/architecture/gui_architecture.md` - justification for the current GUI shell boundary
 
 ## Notes For Ongoing Evaluation Work
 

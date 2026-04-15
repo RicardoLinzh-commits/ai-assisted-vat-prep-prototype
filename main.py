@@ -25,7 +25,7 @@ def _build_parser(base_dir: Path) -> argparse.ArgumentParser:
     parser.add_argument(
         "--output-dir",
         type=Path,
-        default=base_dir / "output",
+        default=base_dir / "output" / "runs" / "source",
         help="Directory where the exported CSV artefacts should be written.",
     )
     parser.add_argument(

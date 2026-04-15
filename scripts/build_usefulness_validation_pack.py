@@ -20,11 +20,13 @@ if str(PROJECT_ROOT) not in sys.path:
 from pipeline import run_pipeline
 
 EVALUATION_DATASET_ROOT = PROJECT_ROOT / "data" / "evaluation"
-OUTPUT_ROOT = PROJECT_ROOT / "output" / "usefulness_validation_pack"
-TASK_PACK_OUTPUT_PATH = OUTPUT_ROOT / "usefulness_validation_task_pack.csv"
-MANIFEST_OUTPUT_PATH = OUTPUT_ROOT / "usefulness_validation_manifest.csv"
-COMPARISON_RESULTS_OUTPUT_PATH = OUTPUT_ROOT / "usefulness_comparison_results.csv"
-COMPARISON_SUMMARY_OUTPUT_PATH = OUTPUT_ROOT / "usefulness_comparison_summary.csv"
+OUTPUT_ROOT = PROJECT_ROOT / "output"
+RUNS_OUTPUT_ROOT = OUTPUT_ROOT / "runs" / "evaluation" / "usefulness_validation_pack"
+EVIDENCE_OUTPUT_ROOT = OUTPUT_ROOT / "evidence" / "evaluation" / "usefulness_validation_pack"
+TASK_PACK_OUTPUT_PATH = EVIDENCE_OUTPUT_ROOT / "usefulness_validation_task_pack.csv"
+MANIFEST_OUTPUT_PATH = EVIDENCE_OUTPUT_ROOT / "usefulness_validation_manifest.csv"
+COMPARISON_RESULTS_OUTPUT_PATH = EVIDENCE_OUTPUT_ROOT / "usefulness_comparison_results.csv"
+COMPARISON_SUMMARY_OUTPUT_PATH = EVIDENCE_OUTPUT_ROOT / "usefulness_comparison_summary.csv"
 
 USEFULNESS_DATASETS = {
     "review_support_case.csv": "Explainability and prioritisation comparison",
@@ -320,7 +322,8 @@ def _build_comparison_rows(
 
 def main() -> None:
     """Generate usefulness-validation artefacts for the evaluation datasets."""
-    OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
+    RUNS_OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
+    EVIDENCE_OUTPUT_ROOT.mkdir(parents=True, exist_ok=True)
 
     manifest_rows: list[dict[str, str]] = []
     task_rows: list[dict[str, object]] = []
@@ -329,7 +332,7 @@ def main() -> None:
 
     for dataset_name, scenario_goal in USEFULNESS_DATASETS.items():
         dataset_path = EVALUATION_DATASET_ROOT / dataset_name
-        dataset_output_dir = OUTPUT_ROOT / dataset_path.stem
+        dataset_output_dir = RUNS_OUTPUT_ROOT / dataset_path.stem
         dataset_output_dir.mkdir(parents=True, exist_ok=True)
 
         run_result = run_pipeline(str(dataset_path), str(dataset_output_dir))
@@ -350,7 +353,7 @@ def main() -> None:
         raw_df.to_csv(raw_output_path, index=False)
         enhanced_df.to_csv(enhanced_output_path, index=False)
         comparison_df.to_csv(comparison_output_path, index=False)
-        comparison_result_df.to_csv(OUTPUT_ROOT / f"{dataset_path.stem}_comparison_results.csv", index=False)
+        comparison_result_df.to_csv(EVIDENCE_OUTPUT_ROOT / f"{dataset_path.stem}_comparison_results.csv", index=False)
         comparison_rows.append(comparison_result_df)
         comparison_summaries.append(comparison_summary_df)
 

@@ -110,9 +110,9 @@ venv\Scripts\python.exe scripts\generate_realism_vat_dataset.py
 
 Outputs are written to:
 
-- `output/realism_dataset/synthetic_vat_realism_dataset.csv`
-- `output/realism_dataset/synthetic_vat_realism_summary.csv`
-- `output/realism_dataset/synthetic_vat_realism_metadata.json`
+- `output/runs/realism_dataset/synthetic_vat_realism_dataset.csv`
+- `output/runs/realism_dataset/synthetic_vat_realism_summary.csv`
+- `output/runs/realism_dataset/synthetic_vat_realism_metadata.json`
 
 ## Validation Use
 

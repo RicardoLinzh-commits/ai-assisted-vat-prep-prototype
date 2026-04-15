@@ -17,13 +17,17 @@ from pathlib import Path
 import pandas as pd
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SUMMARY_INPUT_PATH = PROJECT_ROOT / "output" / "synthetic_evaluation_summary.csv"
-ASSERTION_SUMMARY_INPUT_PATH = PROJECT_ROOT / "output" / "evaluation_assertion_summary.csv"
-USEFULNESS_SUMMARY_INPUT_PATH = PROJECT_ROOT / "output" / "usefulness_validation_pack" / "usefulness_comparison_summary.csv"
+OUTPUT_ROOT = PROJECT_ROOT / "output"
+EVIDENCE_ROOT = OUTPUT_ROOT / "evidence" / "evaluation"
+LEGACY_OUTPUT_ROOT = OUTPUT_ROOT
 
-LEGACY_TABLE_OUTPUT_PATH = PROJECT_ROOT / "output" / "synthetic_evaluation_results_table.csv"
-ASSERTION_TABLE_OUTPUT_PATH = PROJECT_ROOT / "output" / "evaluation_assertion_results_table.csv"
-OVERVIEW_TABLE_OUTPUT_PATH = PROJECT_ROOT / "output" / "evaluation_results_overview.csv"
+SUMMARY_INPUT_PATH = EVIDENCE_ROOT / "synthetic_evaluation_summary.csv"
+ASSERTION_SUMMARY_INPUT_PATH = EVIDENCE_ROOT / "evaluation_assertion_summary.csv"
+USEFULNESS_SUMMARY_INPUT_PATH = EVIDENCE_ROOT / "usefulness_validation_pack" / "usefulness_comparison_summary.csv"
+
+LEGACY_TABLE_OUTPUT_PATH = EVIDENCE_ROOT / "synthetic_evaluation_results_table.csv"
+ASSERTION_TABLE_OUTPUT_PATH = EVIDENCE_ROOT / "evaluation_assertion_results_table.csv"
+OVERVIEW_TABLE_OUTPUT_PATH = EVIDENCE_ROOT / "evaluation_results_overview.csv"
 
 LEGACY_COLUMNS = [
     "dataset_name",
@@ -78,6 +82,13 @@ def _read_csv(path: Path) -> pd.DataFrame:
     if not path.exists():
         return pd.DataFrame()
     return pd.read_csv(path)
+
+
+def _read_first_existing(paths: list[Path]) -> pd.DataFrame:
+    for path in paths:
+        if path.exists():
+            return pd.read_csv(path)
+    return pd.DataFrame()
 
 
 def _safe_row_count(dataset_name: str) -> int | None:
@@ -158,9 +169,25 @@ def _build_assertion_overview(assertion_table: pd.DataFrame) -> pd.DataFrame:
 
 def main() -> None:
     """Create presentation-ready evaluation tables."""
-    legacy_summary_df = _read_csv(SUMMARY_INPUT_PATH)
-    assertion_summary_df = _read_csv(ASSERTION_SUMMARY_INPUT_PATH)
-    usefulness_summary_df = _read_csv(USEFULNESS_SUMMARY_INPUT_PATH)
+    EVIDENCE_ROOT.mkdir(parents=True, exist_ok=True)
+    legacy_summary_df = _read_first_existing(
+        [
+            SUMMARY_INPUT_PATH,
+            LEGACY_OUTPUT_ROOT / "synthetic_evaluation_summary.csv",
+        ]
+    )
+    assertion_summary_df = _read_first_existing(
+        [
+            ASSERTION_SUMMARY_INPUT_PATH,
+            LEGACY_OUTPUT_ROOT / "evaluation_assertion_summary.csv",
+        ]
+    )
+    usefulness_summary_df = _read_first_existing(
+        [
+            USEFULNESS_SUMMARY_INPUT_PATH,
+            LEGACY_OUTPUT_ROOT / "usefulness_validation_pack" / "usefulness_comparison_summary.csv",
+        ]
+    )
 
     legacy_table = _build_legacy_table(legacy_summary_df)
     legacy_table.to_csv(LEGACY_TABLE_OUTPUT_PATH, index=False)

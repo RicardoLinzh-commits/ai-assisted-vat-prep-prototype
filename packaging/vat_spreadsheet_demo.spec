@@ -61,7 +61,7 @@ hiddenimports = package_hiddenimports
 
 
 a = Analysis(
-    ["gui.py"],
+    [str(PROJECT_ROOT / "gui.py")],
     pathex=[str(PROJECT_ROOT)],
     binaries=package_binaries,
     datas=datas,

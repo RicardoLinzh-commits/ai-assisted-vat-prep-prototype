@@ -15,7 +15,7 @@ primary proof of usefulness.
 ## 1. Assertion-Based Validation
 
 The core validation evidence is the machine-checkable assertion summary in
-`output/evaluation_assertion_results_table.csv`.
+`output/evidence/evaluation/evaluation_assertion_results_table.csv`.
 
 The current result is:
 
@@ -43,8 +43,8 @@ Interpretation:
 ## 2. Usefulness Comparison
 
 The usefulness comparison artefacts are in
-`output/usefulness_validation_pack/usefulness_comparison_results.csv` and
-`output/usefulness_validation_pack/usefulness_comparison_summary.csv`.
+`output/evidence/evaluation/usefulness_validation_pack/usefulness_comparison_results.csv` and
+`output/evidence/evaluation/usefulness_validation_pack/usefulness_comparison_summary.csv`.
 
 The current summary is:
 
@@ -71,10 +71,10 @@ Interpretation:
 
 The dissertation-facing presentation layer is now backed by:
 
-- `output/evaluation_results_overview.csv`
-- `output/evaluation_assertion_results_table.csv`
-- `output/synthetic_evaluation_results_table.csv` for legacy raw-count context
-- `output/evaluation_evidence_chart.png`
+- `output/evidence/evaluation/evaluation_results_overview.csv`
+- `output/evidence/evaluation/evaluation_assertion_results_table.csv`
+- `output/evidence/evaluation/synthetic_evaluation_results_table.csv` for legacy raw-count context
+- `output/evidence/evaluation/figures/evaluation_evidence_chart.png`
 
 The chart combines:
 

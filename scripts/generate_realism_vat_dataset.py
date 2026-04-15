@@ -18,7 +18,7 @@ import pandas as pd
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_INPUT_PATH = PROJECT_ROOT / "data" / "realism" / "uci_online_retail_like_seed.csv"
 DEFAULT_CALIBRATION_PATH = PROJECT_ROOT / "data" / "realism" / "monthly_direction_calibration.csv"
-DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "output" / "realism_dataset"
+DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "output" / "runs" / "realism_dataset"
 
 OUTPUT_COLUMNS = [
     "date",

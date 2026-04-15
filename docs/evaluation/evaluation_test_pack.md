@@ -92,14 +92,14 @@ Recommended use:
 3. confirm whether the expected `rule_id`, `issue_type`, `status`, and `risk_level` were produced
 4. record pass/fail for each assertion
 
-The current runner writes `output/evaluation_assertion_results.csv` and `output/evaluation_assertion_summary.csv` so the comparison is machine-readable.
+The current runner writes `output/evidence/evaluation/evaluation_assertion_results.csv` and `output/evidence/evaluation/evaluation_assertion_summary.csv` so the comparison is machine-readable.
 
 For dissertation presentation, the repository also builds:
 
-- `output/evaluation_assertion_results_table.csv`
-- `output/evaluation_results_overview.csv`
-- `output/evaluation_evidence_chart.png`
-- `docs/evaluation_results.md`
+- `output/evidence/evaluation/evaluation_assertion_results_table.csv`
+- `output/evidence/evaluation/evaluation_results_overview.csv`
+- `output/evidence/evaluation/figures/evaluation_evidence_chart.png`
+- `evaluation_results.md`
 
 This gives a structured way to evaluate technical correctness without needing a large benchmark dataset.
 

@@ -137,6 +137,7 @@ After the optimization pass, the pipeline was updated to:
 - parse ISO `YYYY-MM-DD` dates explicitly before any fallback parsing
 - preserve `vat_code` in the prepared canonical schema
 - suppress VAT review prompts when the declared `vat_code` and observed amount ratio are already consistent
+- treat `vat_code` as optional review context rather than a universally mandatory completeness field, which avoids spurious missing-field findings in datasets that do not carry tax-code columns
 
 The optimized row-level evaluation then produced:
 

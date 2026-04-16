@@ -568,6 +568,25 @@ def validate_vat_data(dataframe: pd.DataFrame) -> dict:
                             log_message="Missing value detected at row %s, column %s",
                             log_args=(row_index, column),
                         )
+                elif column == "vat_code":
+                    if _optional_review_column_enabled(dataframe, "vat_code"):
+                        append_issue(
+                            interpret_signal(
+                                _build_signal(
+                                    dataframe,
+                                    row_index,
+                                    column,
+                                    "missing_required_review_field",
+                                    dataframe.at[row_index, column],
+                                    rule_id="VR017",
+                                    category="Digital record completeness",
+                                    expected_value="A VAT code where the dataset uses one for review support.",
+                                    evidence_expected="Source spreadsheet or supporting transaction evidence",
+                                )
+                            ),
+                            log_message="Missing value detected at row %s, column %s",
+                            log_args=(row_index, column),
+                        )
                 else:
                     append_issue(
                         interpret_signal(

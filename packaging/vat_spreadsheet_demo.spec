@@ -15,7 +15,7 @@ GRADIO_RUNTIME_PACKAGES = (
 )
 RUNTIME_DEMO_FILES = (
     "README_RUN_FIRST.txt",
-    "data/sample_data.csv",
+    "data/demo/sample_data.csv",
 )
 
 

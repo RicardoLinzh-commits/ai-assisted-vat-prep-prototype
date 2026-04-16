@@ -1,142 +1,135 @@
-# AI-Assisted Spreadsheet Records Preparation Tool for UK MTD VAT Reporting
+# AI-Assisted VAT Spreadsheet Review Prototype
 
-## Overview
+> A local-first prototype for UK VAT spreadsheet review, combining deterministic checks, anomaly flagging, explanation-oriented review support, and human decision logging.
 
-This repository contains a local-first Python research prototype for spreadsheet-based VAT records preparation in a UK Making Tax Digital context. The project is now positioned as a human-in-the-loop pre-submission VAT record review and correction support tool rather than a generic data-cleaning utility. The current codebase is organised around one shared Python core and several thin deployment shells.
+This repository contains an undergraduate Final Year Project prototype for reviewing spreadsheet-based VAT records before submission. It is designed for CSV or Excel workflows where a user needs help spotting likely issues, understanding why a record matters, and recording a human review decision against flagged items.
 
-The shared core remains in `pipeline.py` and related modules. The deployment entry points only handle launch, packaging, containerisation, and delivery. They do not own the business logic, and they do not couple evaluation code into each deployment route.
+The prototype is a review assistant. It is not an HMRC filing client, not a bookkeeping platform, and not a replacement for professional tax judgement.
 
-## Current Project Direction
+## What This Project Does
 
-The prototype is intended to help spreadsheet-using businesses review records before VAT submission by:
+The system takes spreadsheet-style transaction records, maps them into a canonical review structure, runs deterministic validation plus bounded anomaly checks, and exports review artefacts such as issue reports, review logs, and summaries.
 
-- identifying records that may be non-compliant, potentially non-compliant, or require manual review
-- explaining why flagged records matter in a VAT / MTD record-preparation context
-- prioritising review attention using transparent risk-oriented outputs
-- supporting structured, evidence-based manual review with decision logging
+In practice, it is intended to answer questions like:
 
-The system does not replace user judgement. Its role is to surface record issues, interpret likely review significance, and support traceable pre-submission checking.
+- Which records need manual attention before VAT submission?
+- Which findings are deterministic data problems versus review signals?
+- Why does a flagged item matter from a VAT-review perspective?
+- What decision did the reviewer take, and is that decision traceable later?
 
-## System Boundary
+## At A Glance
 
-This prototype is intentionally bounded. It is:
+| Aspect | Summary |
+| --- | --- |
+| Main purpose | Pre-submission VAT spreadsheet review support |
+| Typical input | CSV or Excel files with fields such as `date`, `description`, `net_amount`, `vat_amount`, and `category` |
+| Typical output | `issue_report.csv`, `review_log.csv`, `review_history.csv`, `review_summary.csv`, and supporting artefacts |
+| Interaction model | Local-first and human-in-the-loop |
+| Best fit for | Spreadsheet-using SMEs, bookkeepers, students, and project reviewers |
+| Not designed for | VAT filing, legal advice, or automated compliance sign-off |
 
-- local-first
-- human-in-the-loop
-- rule-driven and explanation-oriented
-- focused on record review before VAT submission
+## Why It Is Useful
 
-It is not:
+- It turns spreadsheet checking into a review workflow instead of a one-off error list.
+- It combines deterministic checks with anomaly-style screening so that attention is directed toward likely review points.
+- It explains findings in review language rather than only reporting technical errors.
+- It keeps the reviewer in control by recording decisions instead of silently rewriting records.
 
-- a full accounting platform
-- an HMRC submission client
-- an automatic VAT filing system
-- a late submission or late payment penalty tool
-- a source of final legal or professional tax advice
-- a guarantee of full compliance
+## Example Input Shape
 
-## Target Workflow
+The prototype works with spreadsheet-like transaction tables. A minimal canonical example looks like this:
 
-The intended end-to-end workflow is:
-
-```text
-spreadsheet input
--> data standardisation
--> deterministic validation and risk checks
--> VAT / MTD-oriented issue categorisation
--> status and risk assignment
--> explanation of why the issue matters
--> recommended manual review action
--> human decision logging
--> pre-submission review summary
+```csv
+date,description,net_amount,vat_amount,category
+2026-01-03,Office supplies,120.50,24.10,Office
+2026-01-05,Client invoice,1500.00,300.00,Sales
+2026-01-07,Travel expense,89.99,18.00,Travel
+2026-13-01,Equipment purchase,750.00,150.00,Equipment
 ```
 
-This means the prototype should be understood as a review-support system. Detection remains important, but the user-facing value comes from interpretation, prioritisation, and traceable manual review.
+The system can also ingest wider spreadsheets and map them into this canonical structure during preparation.
 
-## Current Architecture
+## What The Prototype Produces
 
-The project now follows a simplified "same Python core + five entry points" structure:
+Depending on the dataset and run path, outputs can include:
 
-1. `main.py` for source-run / developer / dissertation reproduction use
-2. `gui.py` for the main local browser GUI
-3. Docker for a consistent demo/deployment shell around the same GUI service
-4. PyInstaller for the Windows distributable demo package
-5. A limited web demo deployment path based on the same GUI service
+- `dataset_snapshot.csv`
+- `prepared_canonical_records.csv`
+- `issue_report.csv`
+- `review_log.csv`
+- `review_history.csv`
+- `review_summary.csv`
+- diagnostic outputs when required fields are missing
 
-Core processing workflow:
+These artefacts are meant to support review, explanation, and traceability rather than provide a single pass/fail result.
+
+## Review Workflow
 
 ```text
-spreadsheet input
--> ingestion
--> preparation to canonical schema
--> deterministic validation
--> IQR anomaly flagging
--> review queue
--> exported CSV artefacts
+input spreadsheet
+-> canonicalise fields
+-> run deterministic validation
+-> flag unusual records
+-> interpret findings for review
+-> capture reviewer decisions
+-> export review artefacts
 ```
 
-Target product workflow and system boundary are documented in [docs/domain/project_direction.md](docs/domain/project_direction.md).
+## Evaluation Position
 
-## Current Status Of The Five Entry Points
+This repository does not claim validation on live HMRC systems or on authoritative VAT ground-truth datasets. Instead, it uses several dataset layers for different purposes:
 
-| Entry point | Current status | Primary use |
-| --- | --- | --- |
-| Python / source run | Implemented | developer use, dissertation reproduction, scripted runs |
-| Local browser GUI | Implemented | main interaction entry on Windows and macOS |
-| Docker | Implemented | local container demo and deployment baseline |
-| Windows packaged demo | Implemented | teacher/reviewer/demo delivery |
-| Web demo profile | Deployment path documented | limited public demo, not the default product form |
+- controlled evaluation cases for rule correctness and workflow checks
+- public-source transaction-style datasets for spreadsheet robustness
+- demo datasets for walkthroughs and packaging
+- supplemental synthetic realism datasets for structure-oriented evaluation
 
-At the current project stage, this repository is intentionally **not** being published as a PyPI package. The codebase is still moving around a dissertation prototype and the evaluation layer is still incomplete, so source-run remains the correct Python entry for now.
+This separation is intentional. Different datasets support different claims, and the project avoids presenting synthetic or adapted data as real SME tax ground truth.
 
-## Local-First Boundary
+For provenance and evaluation context, see:
 
-The default shape of the project is still local-first:
-
-- the main interaction form is the local browser GUI in `gui.py`
-- Windows reviewers should primarily use the packaged demo folder / zip
-- macOS local demonstration should use the same GUI from source
-- the web-facing version is a limited demo profile, not the default product form
-
-AI boundary:
-
-- the full uploaded spreadsheet is **not** sent to AI by default
-- optional AI suggestions use a compact findings snapshot only
-- AI is interpretation-only and does not decide findings or rewrite the source spreadsheet
-- public web demo deployments should avoid sensitive files and may disable AI controls or limit upload size
+- [docs/data_sources.md](docs/data_sources.md)
+- [docs/evaluation/evaluation_plan.md](docs/evaluation/evaluation_plan.md)
+- [docs/evaluation/evaluation_results.md](docs/evaluation/evaluation_results.md)
+- [docs/evaluation/dataset_audit_recommendations.md](docs/evaluation/dataset_audit_recommendations.md)
 
 ## Quick Start
 
-### 1. Install dependencies
+### 1. Create A Virtual Environment
 
 Windows:
 
 ```bat
+python -m venv venv
+venv\Scripts\python.exe -m pip install --upgrade pip
 venv\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
 macOS or Linux:
 
 ```bash
-python3 -m pip install -r requirements.txt
+python3 -m venv venv
+venv/bin/python -m pip install --upgrade pip
+venv/bin/python -m pip install -r requirements.txt
 ```
 
-### 2. Run the source entry
+### 2. Run The Shared Pipeline From Source
+
+Windows:
 
 ```bat
-venv\Scripts\python.exe main.py --input data\sample_data.csv --output-dir output
+venv\Scripts\python.exe main.py --input data\demo\sample_data.csv --output-dir output
 ```
 
-This runs the shared pipeline directly and prints a concise summary. It is the recommended source-run path for developer checks and dissertation reproduction work.
+macOS or Linux:
 
-If the input file is missing required fields, the run now still writes a minimal local diagnostic bundle in the output directory:
+```bash
+venv/bin/python main.py --input data/demo/sample_data.csv --output-dir output
+```
 
-- `dataset_snapshot.csv`
-- `input_diagnostics.csv`
+This is the quickest way to inspect exported review artefacts from source.
 
-The diagnostics file shows the required fields, what was mapped, which accepted aliases were available, and how to repair the upload before rerunning.
-
-### 3. Run the local browser GUI
+### 3. Run The Local Browser GUI
 
 Windows:
 
@@ -144,34 +137,16 @@ Windows:
 venv\Scripts\python.exe gui.py --host 127.0.0.1 --port 7860
 ```
 
-macOS:
+macOS or Linux:
 
 ```bash
-./tools/run_demo_mac.command
+venv/bin/python gui.py --host 127.0.0.1 --port 7860
 ```
 
-Windows convenience launcher:
+Convenience launchers:
 
-```bat
-tools\run_demo.bat
-```
-
-### 4. Build the Windows distributable demo
-
-```powershell
-.\tools\build_demo.ps1
-```
-
-Outputs:
-
-- `dist\VAT_Spreadsheet_Demo\`
-- `dist\VAT_Spreadsheet_Demo_windows_x64.zip`
-
-### 5. Start the Docker demo
-
-```bash
-docker compose up --build
-```
+- Windows: `tools\run_demo.bat`
+- macOS: `./tools/run_demo_mac.command`
 
 Then open:
 
@@ -179,87 +154,105 @@ Then open:
 http://127.0.0.1:7860
 ```
 
-## Detailed Deployment Guide
+If you want a small walkthrough dataset first, use `data/demo/sample_data.csv`.
 
-Deployment and delivery details are documented in [docs/deployment.md](docs/deployment.md).
+### 4. Optional Delivery Routes
 
-That document covers:
+Build the Windows packaged demo:
 
-- how developers run from source
-- how macOS local demo works
-- how Windows packaged delivery works
-- how Docker is launched
-- how the limited web demo profile should be deployed
-- what GitHub Actions now build and validate
+```powershell
+.\tools\build_demo.ps1
+```
 
-## Data Sources
+Run the Docker demo:
 
-The repository contains a mix of:
+```bash
+docker compose up --build
+```
 
-- public-source raw transaction-style datasets
-- adapted prototype input datasets
-- controlled evaluation datasets created for testing
-- supplemental synthetic realism data
+More deployment notes are in [docs/deployment.md](docs/deployment.md).
 
-These do not all have the same status. In particular:
+## Key Features
 
-- public raw files are open-source input material, not VAT ground truth
-- adapted files are transformed convenience inputs for the prototype schema
-- evaluation files are repository-authored controlled test cases
-- realism outputs are synthetic supplemental datasets, not official tax truth
+- Deterministic validation for missing values, invalid dates, invalid numeric fields, and duplicate-style issues
+- Lightweight anomaly-style flagging for unusual transaction values
+- Review-oriented explanation fields such as why a finding matters and what to check next
+- Human decision logging with traceable review history
+- Local-first processing by default
+- Shared Python core reused across source run, browser GUI, Docker demo, and Windows package
+- Optional AI interpretation based on compact findings snapshots rather than full spreadsheet upload by default
 
-The full provenance and usage notes are documented in
-[docs/data_sources.md](docs/data_sources.md).
+## Project Scope
 
-## Technology And Attribution
+### In Scope
 
-The prototype is built on a small set of well-defined third-party tools:
+- CSV and Excel ingestion
+- field mapping into a canonical review schema
+- deterministic record checks
+- bounded anomaly-style review signals
+- explanation-oriented review output
+- review prioritisation and human decision capture
+- export of review artefacts and summaries
 
-- Gradio for the browser-based UI shell
-- pandas for tabular processing
-- openpyxl for Excel support
-- Matplotlib for figure and chart generation
-- PyInstaller for the Windows packaged demo
-- Docker for container-based demo delivery
+### Out Of Scope
 
-The most accurate short description is:
+- direct HMRC submission
+- automatic VAT filing
+- legal or tax advice
+- guaranteed compliance
+- replacement of accountants or bookkeeping systems
+- proof of real-world SME deployment readiness
 
-> Built with Gradio, backed by a shared Python review pipeline, with pandas for
-> tabular processing and Matplotlib for figure output.
+## Repository Structure
 
-More detailed notes are documented in
-[docs/technology_and_attribution.md](docs/technology_and_attribution.md).
+- `main.py`: thin source-run entry point
+- `gui.py`: local browser GUI entry point
+- `pipeline.py`: shared orchestration flow
+- `ingestion/`: spreadsheet loading and preparation
+- `validation/`: deterministic checks
+- `anomaly/`: anomaly-style screening
+- `review/`: issue interpretation, queues, and decision persistence
+- `export/`: CSV artefact generation
+- `scripts/`: evaluation helpers and maintenance utilities
+- `data/evaluation/`: controlled evaluation cases
+- `data/demo/`: small demo and smoke-test datasets
+- `data/public_raw/`: public-source transaction-style inputs
+- `data/public_adapted/`: canonicalised public-source robustness inputs
+- `data/realism/`: realism generation seeds/calibration
+- `data/supplemental/realism/`: supplemental synthetic realism artefacts
 
-## Main Repository Structure
+## Deployment Notes
 
-- `pipeline.py` - shared orchestration entry
-- `main.py` - thin source-run shell
-- `gui.py` - thin browser GUI shell
-- `tools/build_demo.ps1` - Windows packaging script
-- `packaging/vat_spreadsheet_demo.spec` - PyInstaller spec for the Windows demo
-- `tools/run_demo.bat` - Windows convenience launcher
-- `tools/run_demo_mac.command` - macOS convenience launcher
-- `scripts/prepare_public_datasets.py` - public dataset adaptation helper
-- `docker-compose.yml` - local Docker launcher
-- `Dockerfile` - single-container GUI service image
-- `.github/workflows/build-windows-demo.yml` - automated Windows package build
-- `.github/workflows/validate-docker-demo.yml` - Docker build validation
-- `ingestion/` - spreadsheet loading and preparation
-- `validation/` - deterministic checks
-- `anomaly/` - anomaly detection
-- `review/` - review queue and review persistence
-- `export/` - CSV export outputs
-- `explanation/` - local automatic explanation
-- `ai/` - compact snapshot and optional AI suggestion layer
-- `scripts/` - evaluation and supporting scripts
-- `docs/architecture/gui_architecture.md` - justification for the current GUI shell boundary
+The default operating model is local-first:
 
-## Notes For Ongoing Evaluation Work
+- the primary interface is the local GUI in `gui.py`
+- source run is the clearest reproduction path for dissertation evaluation
+- Windows reviewers can use the packaged demo
+- Docker provides an environment-consistent demo shell
+- the web-facing path is a limited demo mode, not the default product form
 
-The evaluation part of the dissertation is still incomplete. This deployment structure is deliberately kept separate from that work:
+AI boundary:
 
-- deployment shells call the existing Python core instead of re-implementing pipeline steps
-- packaging, Docker, and workflows do not hard-code evaluation logic
-- if metrics, outputs, or evaluation scripts change later, the entry-point structure should stay stable
+- full uploaded spreadsheets are not sent to AI by default
+- optional AI suggestions use compact findings snapshots only
+- AI output is supportive and interpretive, not authoritative
+- public demo deployments should avoid sensitive files and may disable AI features entirely
 
-That separation is the main reason the repository is now organised around "one core, many thin shells" rather than separate per-platform logic.
+Detailed deployment notes are in [docs/deployment.md](docs/deployment.md). Technology references are in [docs/technology_and_attribution.md](docs/technology_and_attribution.md).
+
+## Dissertation / Review Navigation
+
+If you are reading this repository for assessment or project review, the most useful next documents are:
+
+- [docs/domain/project_direction.md](docs/domain/project_direction.md)
+- [docs/domain/VAT_review_rules.md](docs/domain/VAT_review_rules.md)
+- [docs/domain/VAT_review_workflow.md](docs/domain/VAT_review_workflow.md)
+- [docs/evaluation/evaluation_test_pack.md](docs/evaluation/evaluation_test_pack.md)
+- [docs/evaluation/evaluation_results.md](docs/evaluation/evaluation_results.md)
+- [docs/defense_directory_guide.md](docs/defense_directory_guide.md)
+
+## Acknowledgements
+
+This prototype builds on established open-source tooling for spreadsheet loading, data processing, visualisation, packaging, and local UI delivery. It also uses a mix of controlled, public-source, adapted, demo, and supplemental synthetic datasets for development and evaluation support.
+
+Further attribution notes are in [docs/technology_and_attribution.md](docs/technology_and_attribution.md).

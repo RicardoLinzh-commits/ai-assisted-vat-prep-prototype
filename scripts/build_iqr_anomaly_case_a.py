@@ -13,7 +13,7 @@ if str(PROJECT_ROOT) not in sys.path:
 from anomaly.anomaly_detector import detect_anomalies
 from ingestion.loader import load_spreadsheet
 
-DATASET_PATH = PROJECT_ROOT / "data" / "synthetic_eval_case_a.csv"
+DATASET_PATH = PROJECT_ROOT / "data" / "demo" / "synthetic_eval_case_a.csv"
 OUTPUT_PATH = PROJECT_ROOT / "output" / "iqr_anomaly_case_a.png"
 
 
@@ -23,7 +23,7 @@ def main() -> None:
     anomaly_results = detect_anomalies(dataframe, column="net_amount", method="iqr")
 
     if not anomaly_results:
-        raise ValueError("No anomalies were returned for synthetic_eval_case_a.csv.")
+        raise ValueError("No anomalies were returned for data/demo/synthetic_eval_case_a.csv.")
 
     plotting_frame = dataframe.copy()
     plotting_frame["row_index"] = plotting_frame.index

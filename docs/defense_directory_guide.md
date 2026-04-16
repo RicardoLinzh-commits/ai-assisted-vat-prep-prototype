@@ -151,7 +151,7 @@ venv\Scripts\python.exe scripts\build_evaluation_issue_chart.py
 ### Run the shared pipeline on the sample input
 
 ```bat
-venv\Scripts\python.exe main.py --input data\sample_data.csv --output-dir output\runs\source\sample_check
+venv\Scripts\python.exe main.py --input data\demo\sample_data.csv --output-dir output\runs\source\sample_check
 ```
 
 ## What A Reviewer Can Ignore First

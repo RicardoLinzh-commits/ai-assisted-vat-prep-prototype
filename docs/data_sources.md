@@ -3,16 +3,19 @@
 This document explains the provenance and status of the datasets included in
 this repository.
 
-The repository contains four different kinds of data:
+The repository contains six different kinds of data:
 
 1. public-source raw datasets
 2. adapted datasets prepared for the prototype schema
 3. controlled evaluation datasets created for testing
-4. supplemental realism data and generated synthetic VAT outputs
+4. demo datasets for walkthroughs and packaged delivery
+5. supplemental realism data and generated synthetic VAT outputs
+6. supplemental low-value edge cases retained for completeness
 
 The key point is that these data categories do **not** carry the same meaning.
-Some are public-source records, some are adapted convenience copies, and some
-are synthetic or controlled datasets created to support evaluation.
+Some are public-source records, some are controlled test assets, some are demo
+inputs, and some are supplemental synthetic materials retained for provenance
+or walkthrough support.
 
 ## 1. Public Raw Datasets
 
@@ -165,18 +168,41 @@ It should **not** be described as:
 - official VAT truth
 - legally authoritative transaction classification
 
-## 5. Manual Test Input Convenience Folder
+Generated realism outputs retained in the repository for demonstration are now
+kept under:
 
-The folder:
+- `data/supplemental/realism/`
 
-- `data/public_adapted/test_inputs/`
+These are supplemental artefacts, not core evaluation evidence.
 
-exists only as a convenience collection for manual software runs.
+## 5. Demo Datasets
 
-It contains copies of selected runnable inputs so that manual GUI testing is
-easier. It is not the authoritative source location for those datasets.
+Files under `data/demo/` are intentionally small runnable datasets used for:
 
-## 6. Recommended Citation Language
+- quick walkthroughs
+- packaged demo input
+- smoke-test style manual checks
+
+Current files:
+
+- `data/demo/sample_data.csv`
+- `data/demo/synthetic_eval_case_a.csv`
+- `data/demo/synthetic_eval_case_b.csv`
+
+These files should be described as demo or smoke-test inputs, not as the main
+evaluation evidence for realism or real-world usefulness.
+
+## 6. Supplemental Low-Value Edge Cases
+
+Some files remain in primary folders even though they are weak evidence. For
+example:
+
+- `data/public_adapted/dwp_epcs_july_2025_adapted.csv`
+
+This file is kept as a small adapted public-source edge case, but it should be
+treated as supplemental only.
+
+## 7. Recommended Citation Language
 
 For dissertation or repository wording, the safest phrasing is:
 
@@ -185,10 +211,11 @@ For dissertation or repository wording, the safest phrasing is:
 - `data/public_adapted/` contains prototype-adapted versions of selected public
   raw datasets.
 - `data/evaluation/` contains controlled repository-authored evaluation cases.
-- `data/realism/` and the generated realism CSV outputs support a supplemental
+- `data/demo/` contains small walkthrough and smoke-test datasets.
+- `data/realism/` plus `data/supplemental/realism/` support a supplemental
   synthetic realism check, not tax ground truth.
 
-## 7. Additional Provenance Notes
+## 8. Additional Provenance Notes
 
 The repository currently does **not** store:
 

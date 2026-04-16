@@ -25,8 +25,8 @@ from pipeline import run_pipeline
 from validation.validator import validate_vat_data
 
 SYNTHETIC_DATASET_PATHS = [
-    PROJECT_ROOT / "data" / "synthetic_eval_case_a.csv",
-    PROJECT_ROOT / "data" / "synthetic_eval_case_b.csv",
+    PROJECT_ROOT / "data" / "demo" / "synthetic_eval_case_a.csv",
+    PROJECT_ROOT / "data" / "demo" / "synthetic_eval_case_b.csv",
 ]
 
 OUTPUT_ROOT = PROJECT_ROOT / "output"

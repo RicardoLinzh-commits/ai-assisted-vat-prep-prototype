@@ -71,13 +71,13 @@ Run the shared pipeline directly:
 Windows:
 
 ```bat
-venv\Scripts\python.exe main.py --input data\sample_data.csv --output-dir output
+venv\Scripts\python.exe main.py --input data\demo\sample_data.csv --output-dir output
 ```
 
 macOS / Linux:
 
 ```bash
-python3 main.py --input data/sample_data.csv --output-dir output
+python3 main.py --input data/demo/sample_data.csv --output-dir output
 ```
 
 Notes:
@@ -157,7 +157,7 @@ Package contents:
 
 - `VAT_Spreadsheet_Demo.exe`
 - `README_RUN_FIRST.txt`
-- bundled sample input `data/sample_data.csv`
+- bundled sample input `data/demo/sample_data.csv`
 
 Current packaging choices:
 

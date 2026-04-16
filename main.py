@@ -19,7 +19,7 @@ def _build_parser(base_dir: Path) -> argparse.ArgumentParser:
     parser.add_argument(
         "--input",
         type=Path,
-        default=base_dir / "data" / "sample_data.csv",
+        default=base_dir / "data" / "demo" / "sample_data.csv",
         help="Path to the CSV or Excel file to analyse.",
     )
     parser.add_argument(

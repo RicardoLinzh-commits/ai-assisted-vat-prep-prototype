@@ -54,6 +54,7 @@ ISSUE_REPORT_COLUMNS = [
     "description",
     "net_amount",
     "vat_amount",
+    "vat_code",
     "category",
 ]
 
@@ -63,6 +64,7 @@ CONTEXT_COLUMNS = [
     "description",
     "net_amount",
     "vat_amount",
+    "vat_code",
     "gross_amount",
     "counterparty_ref",
     "document_reference",

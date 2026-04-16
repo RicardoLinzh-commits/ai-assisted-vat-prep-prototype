@@ -135,6 +135,12 @@ Issue count summary:
 - `semantic_risk`: 10
 - `vat_math_inconsistency`: 24
 
+Optimization phase summary:
+
+- baseline row-level evaluation on the poisoned testbed: `Precision = 0.2265`, `Recall = 0.9550`
+- optimized row-level evaluation after fixing ISO date parsing and preserving `vat_code`: `Precision = 0.8846`, `Recall = 0.8288`
+- the main precision gain came from reducing false positives from `362` to `12`, especially by removing widespread `invalid_date_format` and `vat_rate_review_prompt` over-flagging on valid rows
+
 For provenance and evaluation context, see:
 
 - [docs/data_sources.md](docs/data_sources.md)

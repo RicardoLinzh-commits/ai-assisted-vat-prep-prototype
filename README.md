@@ -10,25 +10,43 @@ The prototype is a review assistant. It is not an HMRC filing client, not a book
 
 The current browser GUI is organized around a full review workflow rather than a single upload form.
 
-Representative views in the current build include:
+### Demo Flow
 
-1. Welcome page with project framing and workflow summary
-2. Upload and Run page with run summary and plain-language explanation output
-3. Review Centre with queue controls, issue selection, row context, and reviewer decision capture
-4. Visual Insights dashboard with workload summary cards, charts, and priority findings
-5. Smart Assistant configuration view for optional AI-supported interpretation
-6. Downloads page with recommended exports, advanced exports, and a plain-language summary of what the run means
+![Demo flow](docs/images/demo-flow.gif)
 
-Recommended repository assets for this section:
+### Key Screens
 
-- `docs/images/welcome-page.png`
-- `docs/images/upload-and-run.png`
-- `docs/images/review-centre.png`
-- `docs/images/visual-insights.png`
-- `docs/images/smart-assistant.png`
-- `docs/images/downloads-page.png`
+#### Welcome
 
-If image assets are added to `docs/images/`, this section can be upgraded directly into an illustrated walkthrough for supervisors and assessors.
+![Welcome page](docs/images/welcome-page.png)
+
+#### Upload And Run
+
+![Upload and Run page](docs/images/upload-and-run.png)
+
+#### Review Centre
+
+![Review Centre](docs/images/review-centre.png)
+
+#### Visual Insights
+
+![Visual Insights overview](docs/images/visual-insights-overview.png)
+
+![Visual Insights charts](docs/images/visual-insights-charts.png)
+
+#### Smart Assistant
+
+![Smart Assistant](docs/images/smart-assistant.png)
+
+#### Downloads
+
+![Downloads overview](docs/images/downloads-overview.png)
+
+![Downloads plain-language summary](docs/images/downloads-plain-language.png)
+
+#### Example Source Spreadsheet
+
+![Example source spreadsheet](docs/images/source-spreadsheet.png)
 
 ## What This Project Does
 

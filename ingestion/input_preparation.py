@@ -230,7 +230,10 @@ def prepare_input_dataframe(dataframe: pd.DataFrame) -> PreparationResult:
     prepared_dataframe.attrs["source_mapping"] = mapping
     prepared_dataframe.attrs["canonical_columns"] = tuple(CANONICAL_COLUMNS)
 
-    if all(mapping.get(column_name) == column_name for column_name in CANONICAL_COLUMNS):
+    if all(
+        source_column in (None, canonical_field)
+        for canonical_field, source_column in mapping.items()
+    ):
         return PreparationResult(
             status=PREPARATION_STATUS_CANONICAL,
             prepared_dataframe=prepared_dataframe,

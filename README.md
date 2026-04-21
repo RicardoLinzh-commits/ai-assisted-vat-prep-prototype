@@ -6,6 +6,188 @@ This repository contains an undergraduate Final Year Project prototype for revie
 
 The prototype is a review assistant, not an HMRC filing client, bookkeeping platform, or substitute for professional tax judgement.
 
+## What This Project Does
+
+The system takes spreadsheet-style transaction records, maps them into a canonical review structure, runs deterministic validation plus bounded anomaly checks, and exports review artefacts such as issue reports, review logs, and summaries.
+
+At a practical level, it is designed to answer questions like:
+
+- Which records need manual attention before VAT submission?
+- Which findings are deterministic data problems versus review signals?
+- Why does a flagged item matter from a VAT-review perspective?
+- What decision did the reviewer take, and is that decision traceable later?
+
+## At A Glance
+
+| Aspect | Summary |
+| --- | --- |
+| Main purpose | Pre-submission VAT spreadsheet review support |
+| Typical input | CSV or Excel files with fields such as `date`, `description`, `net_amount`, `vat_amount`, and `category` |
+| Typical output | `issue_report.csv`, `review_log.csv`, `review_history.csv`, `review_summary.csv`, and supporting artefacts |
+| Interaction model | Local-first and human-in-the-loop |
+| Best fit for | Spreadsheet-using SMEs, bookkeepers, students, and project reviewers |
+| Not designed for | VAT filing, legal advice, or automated compliance sign-off |
+
+## Fastest Demo
+
+If you want the shortest path from clone to working demo, do this:
+
+1. Create a virtual environment and install dependencies.
+2. Run the local GUI with the bundled demo dataset.
+3. Open `http://127.0.0.1:7860`.
+
+Windows:
+
+```bat
+python -m venv venv
+venv\Scripts\python.exe -m pip install --upgrade pip
+venv\Scripts\python.exe -m pip install -r requirements.txt
+venv\Scripts\python.exe gui.py --host 127.0.0.1 --port 7860
+```
+
+macOS or Linux:
+
+```bash
+python3 -m venv venv
+venv/bin/python -m pip install --upgrade pip
+venv/bin/python -m pip install -r requirements.txt
+venv/bin/python gui.py --host 127.0.0.1 --port 7860
+```
+
+Then use the sample file at `data/demo/sample_data.csv`.
+
+## Requirements
+
+- Python `3.14`
+- `pip`
+- A local browser for the GUI mode
+- Docker Desktop or Docker Engine if you want the container demo
+- Windows if you want to build the packaged desktop demo with `tools/build_demo.ps1`
+
+Why `3.14`:
+
+- the current GitHub Actions build and validation workflows use Python `3.14`
+- matching that version locally gives the closest path to CI behaviour
+
+## Installation
+
+### 1. Create A Virtual Environment
+
+Windows:
+
+```bat
+python -m venv venv
+venv\Scripts\python.exe -m pip install --upgrade pip
+venv\Scripts\python.exe -m pip install -r requirements.txt
+```
+
+macOS or Linux:
+
+```bash
+python3 -m venv venv
+venv/bin/python -m pip install --upgrade pip
+venv/bin/python -m pip install -r requirements.txt
+```
+
+For local development and tests, also install the dev dependency set:
+
+Windows:
+
+```bat
+venv\Scripts\python.exe -m pip install -r requirements-dev.txt
+```
+
+macOS or Linux:
+
+```bash
+venv/bin/python -m pip install -r requirements-dev.txt
+```
+
+### 2. Optional AI Configuration
+
+The prototype works without any AI keys. The local review workflow, validation, exports, and demo run all work without AI configuration.
+
+Optional enhanced suggestions can use provider-specific environment variables such as:
+
+- `GEMINI_API_KEY` or `GOOGLE_API_KEY`
+- `OPENAI_API_KEY`
+- `ANTHROPIC_API_KEY`
+- `VAT_AI_API_KEY`
+- `GEMINI_MODEL`
+- `OPENAI_MODEL`
+- `CLAUDE_MODEL`
+- `VAT_AI_MODEL`
+
+You can also enter an API key directly in the GUI when using the advanced suggestions path.
+
+## Running The Project
+
+### 1. Run The Shared Pipeline From Source
+
+Windows:
+
+```bat
+venv\Scripts\python.exe main.py --input data\demo\sample_data.csv --output-dir output
+```
+
+macOS or Linux:
+
+```bash
+venv/bin/python main.py --input data/demo/sample_data.csv --output-dir output
+```
+
+This is the quickest way to inspect exported review artefacts from source.
+
+### 2. Run The Local Browser GUI
+
+Windows:
+
+```bat
+venv\Scripts\python.exe gui.py --host 127.0.0.1 --port 7860
+```
+
+macOS or Linux:
+
+```bash
+venv/bin/python gui.py --host 127.0.0.1 --port 7860
+```
+
+Convenience launchers:
+
+- Windows: `tools\run_demo.bat`
+- macOS: `./tools/run_demo_mac.command`
+
+Then open:
+
+```text
+http://127.0.0.1:7860
+```
+
+### 3. Optional Delivery Routes
+
+Build the Windows packaged demo:
+
+```powershell
+.\tools\build_demo.ps1
+```
+
+Run the Docker demo:
+
+```bash
+docker compose up --build
+```
+
+More deployment notes are in [docs/deployment.md](docs/deployment.md).
+
+## Demo Assets
+
+This repository includes multiple demo-friendly paths:
+
+- GUI walkthrough with the bundled sample spreadsheet at `data/demo/sample_data.csv`
+- source-run pipeline example using the same sample dataset
+- local Docker demo on port `7860`
+- Windows packaged demo build via `tools/build_demo.ps1`
+
 ## Screenshots And Demo
 
 The browser GUI is organized around a complete review workflow rather than a single upload form.
@@ -55,28 +237,6 @@ The prototype is organized as a local-first review pipeline that prepares spread
 ![High-level system architecture](docs/images/architecture/architecture-overview.png)
 
 For a more detailed layered view of the modules, orchestration flow, and generated review artefacts, see [architecture.md](architecture.md).
-
-## What This Project Does
-
-The system takes spreadsheet-style transaction records, maps them into a canonical review structure, runs deterministic validation plus bounded anomaly checks, and exports review artefacts such as issue reports, review logs, and summaries.
-
-At a practical level, it is designed to answer questions like:
-
-- Which records need manual attention before VAT submission?
-- Which findings are deterministic data problems versus review signals?
-- Why does a flagged item matter from a VAT-review perspective?
-- What decision did the reviewer take, and is that decision traceable later?
-
-## At A Glance
-
-| Aspect | Summary |
-| --- | --- |
-| Main purpose | Pre-submission VAT spreadsheet review support |
-| Typical input | CSV or Excel files with fields such as `date`, `description`, `net_amount`, `vat_amount`, and `category` |
-| Typical output | `issue_report.csv`, `review_log.csv`, `review_history.csv`, `review_summary.csv`, and supporting artefacts |
-| Interaction model | Local-first and human-in-the-loop |
-| Best fit for | Spreadsheet-using SMEs, bookkeepers, students, and project reviewers |
-| Not designed for | VAT filing, legal advice, or automated compliance sign-off |
 
 ## Why It Matters
 
@@ -134,6 +294,16 @@ input spreadsheet
 -> export review artefacts
 ```
 
+## Key Features
+
+- Deterministic validation for missing values, invalid dates, invalid numeric fields, and duplicate-style issues
+- Lightweight anomaly-style flagging for unusual transaction values
+- Review-oriented explanation fields such as why a finding matters and what to check next
+- Human decision logging with traceable review history
+- Local-first processing by default
+- Shared Python core reused across source run, browser GUI, Docker demo, and Windows package
+- Optional AI interpretation based on compact findings snapshots rather than full spreadsheet upload by default
+
 ## Evaluation Position
 
 This repository does not claim validation on live HMRC systems or on authoritative VAT ground-truth datasets. Instead, it uses several dataset layers for different purposes:
@@ -175,95 +345,6 @@ For provenance and evaluation context, see:
 - [docs/evaluation/evaluation_plan.md](docs/evaluation/evaluation_plan.md)
 - [docs/evaluation/evaluation_results.md](docs/evaluation/evaluation_results.md)
 - [docs/evaluation/dataset_audit_recommendations.md](docs/evaluation/dataset_audit_recommendations.md)
-
-## Quick Start
-
-### 1. Create A Virtual Environment
-
-Windows:
-
-```bat
-python -m venv venv
-venv\Scripts\python.exe -m pip install --upgrade pip
-venv\Scripts\python.exe -m pip install -r requirements.txt
-```
-
-macOS or Linux:
-
-```bash
-python3 -m venv venv
-venv/bin/python -m pip install --upgrade pip
-venv/bin/python -m pip install -r requirements.txt
-```
-
-### 2. Run The Shared Pipeline From Source
-
-Windows:
-
-```bat
-venv\Scripts\python.exe main.py --input data\demo\sample_data.csv --output-dir output
-```
-
-macOS or Linux:
-
-```bash
-venv/bin/python main.py --input data/demo/sample_data.csv --output-dir output
-```
-
-This is the quickest way to inspect exported review artefacts from source.
-
-### 3. Run The Local Browser GUI
-
-Windows:
-
-```bat
-venv\Scripts\python.exe gui.py --host 127.0.0.1 --port 7860
-```
-
-macOS or Linux:
-
-```bash
-venv/bin/python gui.py --host 127.0.0.1 --port 7860
-```
-
-Convenience launchers:
-
-- Windows: `tools\run_demo.bat`
-- macOS: `./tools/run_demo_mac.command`
-
-Then open:
-
-```text
-http://127.0.0.1:7860
-```
-
-If you want a small walkthrough dataset first, use `data/demo/sample_data.csv`.
-
-### 4. Optional Delivery Routes
-
-Build the Windows packaged demo:
-
-```powershell
-.\tools\build_demo.ps1
-```
-
-Run the Docker demo:
-
-```bash
-docker compose up --build
-```
-
-More deployment notes are in [docs/deployment.md](docs/deployment.md).
-
-## Key Features
-
-- Deterministic validation for missing values, invalid dates, invalid numeric fields, and duplicate-style issues
-- Lightweight anomaly-style flagging for unusual transaction values
-- Review-oriented explanation fields such as why a finding matters and what to check next
-- Human decision logging with traceable review history
-- Local-first processing by default
-- Shared Python core reused across source run, browser GUI, Docker demo, and Windows package
-- Optional AI interpretation based on compact findings snapshots rather than full spreadsheet upload by default
 
 ## Version History
 
@@ -332,6 +413,10 @@ AI boundary:
 - public demo deployments should avoid sensitive files and may disable AI features entirely
 
 Detailed deployment notes are in [docs/deployment.md](docs/deployment.md). Technology references are in [docs/technology_and_attribution.md](docs/technology_and_attribution.md).
+
+## Contributing
+
+Contribution guidance lives in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Dissertation / Review Navigation
 
